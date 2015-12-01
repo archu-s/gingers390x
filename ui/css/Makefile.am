@@ -15,4 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+EXTRA_DIST = theme-default
+
 cssdir = $(datadir)/wok/plugins/gingers390x/ui/css
+dist_css_DATA = theme-default.min.css
+
+theme-default.min.css: theme-default/*.css
+	cat $^ > $@
+
+CLEANFILES = theme-default.min.css
