@@ -1,0 +1,68 @@
+#*
+ * Project Ginger S390x
+ *
+ * Copyright IBM, Corp. 2015
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+
+#unicode UTF-8
+#import gettext
+#from wok.cachebust import href
+#silent t = gettext.translation($lang.domain, $lang.localedir, languages=$lang.lang, fallback=True)
+#silent _ = t.gettext
+#silent _t = t.gettext
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="plugins/gingers390x/css/theme-default.min.css">
+<script src="plugins/gingers390x/js/gingers390x.min.js"></script>
+<link rel="stylesheet" href="$href('libs/bootstrap-select/dist/css/jquery.bootgrid.min.css')">
+<script src="$href('libs/bootstrap-select/dist/js/jquery.bootgrid.min.js')"></script>
+
+</head>
+<body>
+
+<div class="modal-dialog">
+<div id="network-window" class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">$_("Add Network Adapter")</h4>
+    </div>
+    <!--start of modal-body-->
+    <div class="modal-body">
+    <div id="network-section">
+        <h3>$_("Offline Network Devices")</h3>
+        <div class="content-area">
+		        <span id='alert-modal-nw-container' style='display: none;'></span>
+            <div id="network-content-container"><!--Filled by JS--></div>
+                <p>
+                $_("Didn't found the device your are looking for? It may be in Blacklist..")</p>
+		    </div>
+    	  <h3>$_("Remove From Blacklist")</h3>
+    	  <div class="content-area" id="blacklist-content-container"><!--Filled by JS--></div>
+      </div>
+      </div>
+  <!--end of modal-body-->
+  <!--start of modal-footer-->
+      <div class="modal-footer">
+         <button type="button" id="networkAdpaterFinish" data-dismiss="modal" class="btn btn-default">$_("Finish")</button>
+       </div>
+  <!--end of modal-footer-->
+</div>
+</div>
+<script>
+gingers390x.initNetwork()
+</script>
+</body>
+</html>
