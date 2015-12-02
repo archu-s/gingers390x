@@ -38,7 +38,7 @@ gingers390x.initHeader = function(opts){
 	'</th>'
 	].join('');
 
-	$(columnHtml).appendTo($('#'+gridId).find('tr'));
+	$(columnHtml).appendTo($('tr','#'+gridId));
 	}
 	$('#'+opts['gridId']).append('<div class="loading" colspan="8">Loading...</div>');
 };
@@ -47,7 +47,7 @@ gingers390x.initBootgrid= function(opts){
 
 	var gridId = opts['gridId'];
 
-	$('#'+gridId).bootgrid({
+	var grid = $('#'+gridId).bootgrid({
     	selection: true,
     	multiSelect: true,
     	rowCount:-1,
@@ -55,14 +55,15 @@ gingers390x.initBootgrid= function(opts){
     	columnSelection:false,
     	rowSelect:true,
     	labels: {
-    		search: "Filter",
-    		noResults:"No offlined network device found."  // TODO common message
+    		search: "Filter"//,
+    		// noResults:"No offlined network device found."  // TODO common message
     	},
     	css: {   // TODO css
             actions: "actions btn-group",//??
-            table: "",//???
+            // table: "",//???
             selectBox: "fa fa-check-circle"///???
-
+						iconDown : "fa fa-sort-desc",
+						iconUp: "fa fa-sort-asc"
       }
 	}).on("load.rs.jquery.bootgrid", function (e) {
         	$('.input-group .glyphicon-search').removeClass('.glyphicon-search').addClass('fa fa-search');
