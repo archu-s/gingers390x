@@ -117,20 +117,20 @@ gingers390x.initNetworkBootGridData = function(opts){
 	};
 
 gingers390x.enableNetworkCallback = function(selectedRowIds){
-		alert(selectedRowIds[0])
+		wok.message.warn("Enabling "+selectedRowIds+"..On Completion success/failure message will be shown.",'#alert-modal-nw-container');
 		var taskAccepted = false;
 			var onTaskAccepted = function() {
 					if(taskAccepted) {
 							return;
 					}
 					taskAccepted = true;
-					wok.topic('gingerbase/debugReportAdded').publish();
+					wok.topic('gingers390x/enableNetwork').publish();
 		 };
 		 gingers390x.configureNetwork(selectedRowIds[0], true, function(result) {
 					onTaskAccepted();
 					var successText = result['message'];
 					gingers390x.messagecloseable.success(successText,'#alert-modal-nw-container');
-					wok.topic('gingerbase/debugReportAdded').publish();
+					wok.topic('gingers390x/enableNetwork').publish();
 			 }, function(result) {
 					if (result['message']) { // Error message from Async Task status TODO
 							var errText = result['message'];
