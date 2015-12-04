@@ -68,23 +68,27 @@ gingers390x.initNetworkBootgrid = function(actionButtonText){
 	gingers390x.initHeader(opts);
 	gingers390x.initBootgrid(opts);
 
-	gingers390x.initNetworkBootGridData(opts);
-
 	var actionButtonHtml = '<div class="col-sm-1 grid-control">'+
-	'<button class="row btn btn-primary" type="submit" id="network-enable-btn" aria-expanded="false">'+actionButtonText+'</button>'+
+	'<button class="row btn btn-primary" type="submit" id="network-enable-btn" aria-expanded="false" disabled="true">'+actionButtonText+'</button>'+
 	'</div>';
-	var selectedRowIds = [];
-	gingers390x.addBootgridActionButton(opts, actionButtonHtml, selectedRowIds);
+	// var selectedRowIds = [];
+	gingers390x.addBootgridActionButton(opts, actionButtonHtml);
 	 $('#network-enable-btn').on('click', function(event){
-   	 gingers390x.enableNetworkCallback(selectedRowIds);
+     gingers390x.disableActionButton();
+   	 gingers390x.enableNetworks(opts);
      event.preventDefault();
    });
+
+	 gingers390x.initNetworkBootGridData(opts);
 
 };
 
 gingers390x.initNetworkBootGridData = function(opts){
 
 		var result=[];
+		gingers390x.disableActionButton();
+		gingers390x.clearBootgridData(opts);
+		// $('.loading').show();
 
 		gingers390x.listNetworks(function(result){
 
@@ -111,34 +115,60 @@ gingers390x.initNetworkBootGridData = function(opts){
 	  }
 
 		stringify_result=JSON.stringify(result, stringifyNestedObject);
-    gingers390x.initBootgridData(opts, stringify_result)
+		stringify_result=JSON.parse(stringify_result);
+
+    gingers390x.initBootgridData(opts, stringify_result);
+
+		if(stringify_result && stringify_result.length > 0){
+	  	gingers390x.enableActionButton();
+		}else{
+			$('.no-data-found').show();
+		}
+
 		});
 
 	};
 
-gingers390x.enableNetworkCallback = function(selectedRowIds){
+gingers390x.enableNetworks = function(opts){
+	var selectedRowIds = gingers390x.getSelectedRows(opts);
 		wok.message.warn("Enabling "+selectedRowIds+"..On Completion success/failure message will be shown.",'#alert-modal-nw-container');
+
 		var taskAccepted = false;
 			var onTaskAccepted = function() {
 					if(taskAccepted) {
 							return;
 					}
 					taskAccepted = true;
-					wok.topic('gingers390x/enableNetwork').publish();
+					wok.topic('gingers390x/enableNetworks').publish();
 		 };
-		 gingers390x.configureNetwork(selectedRowIds[0], true, function(result) {
-					onTaskAccepted();
-					var successText = result['message'];
-					gingers390x.messagecloseable.success(successText,'#alert-modal-nw-container');
-					wok.topic('gingers390x/enableNetwork').publish();
-			 }, function(result) {
-					if (result['message']) { // Error message from Async Task status TODO
-							var errText = result['message'];
-					}
-					else { // Error message from standard gingers390x exception TODO
-							var errText = result['responseJSON']['reason'];
-					}
-					result && gingers390x.messagecloseable.error(errText,'#alert-modal-nw-container');
-					taskAccepted;
-			}, onTaskAccepted);
+
+		 for(var i=0;i<selectedRowIds.length;i++){
+			 gingers390x.configureNetwork(selectedRowIds[i], true, function(result) {
+						onTaskAccepted();
+						gingers390x.initNetworkBootGridData(opts);  //Reload The list
+						var successText = result['message'];
+						gingers390x.messagecloseable.success(successText,'#alert-modal-nw-container');
+						wok.topic('gingers390x/enableNetworks').publish();
+				 }, function(result) {
+					 gingers390x.initNetworkBootGridData(opts);  //Reload the list
+						if (result['message']) { // Error message from Async Task status TODO
+								var errText = result['message'];
+						}
+						else { // Error message from standard gingers390x exception TODO
+								var errText = result['responseJSON']['reason'];
+						}
+						result && gingers390x.messagecloseable.error(errText,'#alert-modal-nw-container');
+						taskAccepted;
+				}, onTaskAccepted);
+		 }
+
+
+	};
+
+	gingers390x.enableActionButton = function(){
+		$('#network-enable-btn').prop("disabled", false);
+	};
+
+	gingers390x.disableActionButton = function(){
+		$('#network-enable-btn').prop("disabled", true);
 	};
