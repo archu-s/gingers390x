@@ -96,10 +96,20 @@ var gingers390x = {
 
         function convetToList(key, value) {
 
-    	    if (key === "devices" && typeof value === 'string') {
-    	        value = JSON.parse("[" + JSON.stringify(value) + "]");
-    	    }
-    	    return value;
+          if (key === "devices" && typeof value === 'string') {
+            val = (value).split(",");
+            finalVal = "["
+            for (i=0;i<val.length;i++){
+              if(i==0){
+                finalVal = finalVal+JSON.stringify(val[i]);
+              }else{
+                finalVal = finalVal+","+JSON.stringify(val[i]);
+              }
+            }
+            finalVal = finalVal+"]"
+            value = JSON.parse(finalVal);
+          }
+          return value;
     	};
 
         wok.requestJSON({
