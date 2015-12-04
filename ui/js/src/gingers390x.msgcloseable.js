@@ -33,7 +33,7 @@ gingers390x.messagecloseable = function(msg, level, node) {
 
 gingers390x.messagecloseable.warn = function(msg, node) {
     "use strict";
-    gingers390x.messagecloseable(msg, 'alert-warning', node); 
+    gingers390x.messagecloseable(msg, 'alert-warning', node);
 };
 gingers390x.messagecloseable.error = function(msg, node) {
     "use strict";
