@@ -37,7 +37,7 @@ gingers390x.createBlPanel = function(opts, actionCallBack){
     		var noteText = opts.noteText;
 
 
-    		var alertHtml = ["<span id='alert-modal-container' style='display: none;'></span>"].join('');
+    		var alertHtml = ["<span id='alert-bl-modal-container' style='display: none;'></span>"].join('');
     		$(alertHtml).appendTo("#blacklist-content-container");
 
     		var formHtml = ["<form class='form-inline' role='form' id='form-blacklist-remove'>" ,
@@ -70,7 +70,9 @@ gingers390x.createBlPanel = function(opts, actionCallBack){
 
     	 gingers390x.removeFromBlackList = function(event){
 
-    	    	var formData = $('#button-blacklist-remove').serializeObject();
+    	    	var formData = $('#form-blacklist-remove').serializeObject();
+            wok.message.warn("Removing "+JSON.stringify(formData)+"..On Completion success/failure message will be shown.",'#alert-bl-modal-container');
+            gingers390x.disableBlActionButton();
 
     	    	var taskAccepted = false;
     	        var onTaskAccepted = function() {
@@ -85,7 +87,8 @@ gingers390x.createBlPanel = function(opts, actionCallBack){
     	        gingers390x.removeBlacklist(formData, function(result) {
     	            onTaskAccepted();
     	            var successText = result['message'];
-    	            gingers390x.messagecloseable.success(successText,'#alert-modal-container');
+    	            gingers390x.messagecloseable.success(successText,'#alert-bl-modal-container');
+                  	gingers390x.enableBlActionButton();
     	            wok.topic('gingerbase/debugReportAdded').publish();
     	        }, function(result) {
     	            // Error message from Async Task status
@@ -96,7 +99,8 @@ gingers390x.createBlPanel = function(opts, actionCallBack){
     	            else {
     	                var errText = result['responseJSON']['reason'];
     	            }
-    	            result && gingers390x.messagecloseable.error(errText,'#alert-modal-container');
+    	            result && gingers390x.messagecloseable.error(errText,'#alert-bl-modal-container');
+                  	gingers390x.enableBlActionButton();
 
     	            taskAccepted;
 
@@ -104,3 +108,11 @@ gingers390x.createBlPanel = function(opts, actionCallBack){
 
     	        event.preventDefault();
     	    };
+
+          gingers390x.enableBlActionButton = function(){
+            $('#button-blacklist-remove').prop("disabled", false);
+          };
+
+          gingers390x.disableBlActionButton = function(){
+            $('#button-blacklist-remove').prop("disabled", true);
+          };
