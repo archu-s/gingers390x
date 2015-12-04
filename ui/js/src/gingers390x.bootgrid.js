@@ -40,7 +40,11 @@ gingers390x.initHeader = function(opts){
 
 	$(columnHtml).appendTo($('tr','#'+gridId));
 	}
-	$('#'+opts['gridId']).append('<div class="loading" colspan="8">Loading...</div>');
+	var loadingHtml = ['<tbody><tr><td></td></tr></tbody><tbody><tr><td class="loading" colspan="'+fields.length+'">Loading.....</td></tr></tbody>'].join('');  //TODO i18n
+	$(loadingHtml).appendTo($('#'+gridId));
+
+	// $('#'+containerId).append('<div class="loading" colspan="8">Loading...</div>');
+	// $('#'+containerId).append('<div class="no-data-found" colspan="8" disabled="true">No Data Found</div>');
 };
 
 gingers390x.initBootgrid= function(opts){
@@ -56,42 +60,66 @@ gingers390x.initBootgrid= function(opts){
     	rowSelect:true,
     	labels: {
     		search: "Filter"//,
-    		// noResults:"No offlined network device found."  // TODO common message
+    		 noResults:""
     	},
     	css: {   // TODO css
-            actions: "actions btn-group",//??
-            // table: "",//???
-            selectBox: "fa fa-check-circle"///???
 						iconDown : "fa fa-sort-desc",
 						iconUp: "fa fa-sort-asc"
       }
-	}).on("load.rs.jquery.bootgrid", function (e) {
+	}).on("loaded.rs.jquery.bootgrid", function (e) {
         	$('.input-group .glyphicon-search').removeClass('.glyphicon-search').addClass('fa fa-search');
+					$( ".no-results" ).remove();
+					if($('#'+gridId).bootgrid('getTotalRowCount') > 0){
+						$( ".loading" ).hide();
+					}else{
+						$( ".loading" ).show();
+						$( ".loading" ).text("Loading....."); //TODO i18n
+					}
+  }).on("appended.rs.jquery.bootgrid", function (e, appendedRows) {
+		if($('#'+gridId).bootgrid('getTotalRowCount') === 0){
+			$( ".loading" ).text("No Result Found"); //TODO i18n
+			gingers390x.deselectAll();
+		}else{
+			$( ".loading" ).text("Loading....."); //TODO i18n
+		}
   });
 
 };
 
 gingers390x.initBootgridData = function(opts, data){
-  $('#'+opts['gridId']).bootgrid("append",JSON.parse(data));
+	gingers390x.clearBootgridData(opts);
+	$('.loading').show();
+  gingers390x.appendBootgridData(opts,data));
   $('.loading').hide();
 };
 
-gingers390x.addBootgridActionButton = function(opts, actionButtonHtml, selectedRowIds){
+gingers390x.clearBootgridData = function(opts){
+	$('#'+opts['gridId']).bootgrid("clear");
+};
+
+gingers390x.appendBootgridData = function(opts, data){
+	  $('#'+opts['gridId']).bootgrid("append",data);
+};
+
+gingers390x.getSelectedRows = function(opts){
+  return $('#'+opts['gridId']).bootgrid("getSelectedRows");
+};
+
+gingers390x.deselectAll = function(opts){
+  $('#'+opts['gridId']).bootgrid("deselect");
+};
+
+gingers390x.addBootgridActionButton = function(opts, actionButtonHtml){
 	// var selectedRowIds = [];
-	$('#'+opts['gridId']).bootgrid().on("selected.rs.jquery.bootgrid", function (e, rows) {
-    	for (var i = 0; i < rows.length; i++) {
-    	selectedRowIds.push(rows[i].name);
-    	}
-    	}).on("deselected.rs.jquery.bootgrid", function (e, rows) {
-    	for (var i = 0; i < rows.length; i++) {
-    	selectedRowIds.pop(rows[i].name);  // TODO
-    	}
-    	});
+	// $('#'+opts['gridId']).bootgrid().on("selected.rs.jquery.bootgrid", function (e, rows) {
+  //   	for (var i = 0; i < rows.length; i++) {
+  //   	selectedRowIds.push(rows[i].name);
+  //   	}
+  //   	}).on("deselected.rs.jquery.bootgrid", function (e, rows) {
+  //   	for (var i = 0; i < rows.length; i++) {
+  //   	selectedRowIds.pop(rows[i].name);  // TODO
+  //   	}
+  //   	});
 
    $(actionButtonHtml).appendTo('#'+opts['gridId']+'-header .row .actionBar');
-  //  $('#network-enable-btn').on('click', function(event){
-  //  	 actionBootgridCallback(selectedRowIds);
-  //    event.preventDefault();
-  //  });
-	// actionBootgridCallback(event, selectedRowIds);
 };
