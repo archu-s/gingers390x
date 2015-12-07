@@ -49,23 +49,52 @@ gingers390x.initBootgrid= function(opts){
 						iconDown : "fa fa-sort-desc",
 						iconUp: "fa fa-sort-asc"
       }
-	}).on("loaded.rs.jquery.bootgrid", function (e) {
-        	$('.input-group .glyphicon-search').removeClass('.glyphicon-search').addClass('fa fa-search');
-					$( ".no-results" ).remove();
-					if($('#'+gridId).bootgrid('getTotalRowCount') > 0){
-						$( ".loading" ).hide();
-						$( ".loading" ).text("Loading....."); //TODO i18n
-					}else{
-						$( ".loading" ).show();
-					}
-  }).on("appended.rs.jquery.bootgrid", function (e, appendedRows) {
-		if($('#'+gridId).bootgrid('getTotalRowCount') === 0){
-			$( ".loading" ).text("No Result Found"); //TODO i18n
-			gingers390x.deselectAll(opts);
-		}else{
-			$( ".loading" ).text("Loading....."); //TODO i18n
-		}
+//	}).on("loaded.rs.jquery.bootgrid", function (e) {
+ //       	$('.input-group .glyphicon-search').removeClass('.glyphicon-search').addClass('fa fa-search');
+//					$( ".no-results" ).remove();
+//					if($('#'+gridId).bootgrid('getTotalRowCount') > 0){
+//						$( ".loading" ).hide();
+//						$( ".loading" ).text("Loading....."); //TODO i18n
+///					}else{
+//						$( ".loading" ).show();
+//					}
+//  }).on("appended.rs.jquery.bootgrid", function (e, appendedRows) {
+//		if($('#'+gridId).bootgrid('getTotalRowCount') === 0){
+//			$( ".loading" ).text("No Result Found"); //TODO i18n
+//			gingers390x.deselectAll(opts);
+//		}else{
+//			$( ".loading" ).text("Loading....."); //TODO i18n
+//		}
+//  });
+ }).on("loaded.rs.jquery.bootgrid", function (e) {
+                $('.input-group .glyphicon-search').removeClass('.glyphicon-search').addClass('fa fa-search');
+                                        $( ".no-results" ).remove();
+                                        if($('#'+gridId).bootgrid('getTotalRowCount') > 0){
+                                                $( ".loading" ).hide();
+                                                $( ".loading" ).text("Loading....."); //TODO i18n
+$('#'+gridId).find('td:empty').remove();
+$('#'+gridId).find('tr:empty').remove();
+$('#'+gridId).find('tbody:empty').remove();
+                                        }else{
+                                                $( ".loading" ).show();
+  }
+}).on("appended.rs.jquery.bootgrid", function (e, appendedRows) {
+                if($('#'+gridId).bootgrid('getTotalRowCount') === 0   && appendedRows==0){
+                        $( ".loading" ).text("No Result Found"); //TODO i18n
+                        gingers390x.deselectAll(opts);
+//              }else if(appendedRows.length>0) {
+//$( ".loading" ).closest("tbody").remove();
+}else{
+//alert("hi")
+//$('#'+gridId).find('td:empty').remove();
+//$('#'+gridId).find('tr:empty').remove();
+//alert("hi")
+//$('#'+gridId).find('tbody:empty').remove();
+$( ".loading" ).closest("tbody").remove();
+
+                }
   });
+
 
 };
 
