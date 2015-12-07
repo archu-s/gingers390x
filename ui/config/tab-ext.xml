@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs-ext>
+    <functionality>Host</functionality>
+    <tab>
+        <access role="admin" mode="admin"/>
+        <access role="user" mode="none"/>
+        <title>Network zIO</title>
+        <path>plugins/gingers390x/network.html</path>
+    </tab>
+    <!--tab>
+        <access role="admin" mode="admin"/>
+        <access role="user" mode="none"/>
+        <title>Updates</title>
+        <path>plugins/gingerbase/host-update.html</path>
+    </tab-->
+</tabs-ext>

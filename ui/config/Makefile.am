@@ -1,5 +1,5 @@
 #
-# Project Ginger S390x
+# Ginger Base
 #
 # Copyright IBM, Corp. 2015
 #
@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SUBDIRS = config css images js pages
+xmldir = $(datadir)/wok/plugins/gingers390x/ui/config
 
-uidir = $(datadir)/wok/plugins/gingers390x/ui
+dist_xml_DATA = \
+	tab-ext.xml \
+	$(NULL)
