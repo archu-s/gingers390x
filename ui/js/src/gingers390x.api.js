@@ -97,7 +97,7 @@ var gingers390x = {
         function convetToList(key, value) {
 
           if (key === "devices" && typeof value === 'string') {
-            val = (value).split(",");
+            val = value.split(",");
             finalVal = "["
             for (i=0;i<val.length;i++){
               if(i==0){

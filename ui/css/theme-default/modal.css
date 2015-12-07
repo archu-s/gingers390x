@@ -29,12 +29,8 @@
  * A partial implementation of the Ruby display functions from Compass:
  * https://github.com/Compass/compass/blob/stable/core/lib/compass/core/sass_extensions/functions/display.rb
  */
- 
- 
-.modal-footer {
-  background-color: #1c94c4;
-}
 
 
-
-
+ .gingers390x .modal-footer {
+   background-color: #1c94c4;
+ }

@@ -15,160 +15,160 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-gingers390x.network = {};
+ gingers390x.network = {};
 
-gingers390x.initNetwork = function(){
+ gingers390x.initNetwork = function(){
 
-	$(".modal-dialog").addClass("modal-lg");
-	$(".content-area", "#network-section").css("height", "50%"); // TODO scroll, heading css
-	$("#network-section").accordion({
-	event:"click",
-	collapsible:true,
-	active:0,
-	heightStyle: "content",
-	});
+ 	$(".modal-dialog").addClass("modal-lg");
+ 	$(".content-area", "#network-section").css("height", "50%"); // TODO scroll, heading css
+ 	$("#network-section").accordion({
+ 	event:"click",
+ 	collapsible:true,
+ 	active:0,
+ 	heightStyle: "content",
+ 	});
 
-	gingers390x.initBlacklist();
-	gingers390x.initNetworkBootgrid('Enable'); // TODO i18n
-};
+ 	gingers390x.initBlacklist();
+ 	gingers390x.initNetworkBootgrid('Enable'); // TODO i18n
+ };
 
-gingers390x.initNetworkBootgrid = function(actionButtonText){
+ gingers390x.initNetworkBootgrid = function(actionButtonText){
 
-	var opts =[];
-	opts['containerId']='network-content-container';
-	opts['gridId']= "network-table-grid";
+ 	var opts =[];
+ 	opts['containerId']='network-content-container';
+ 	opts['gridId']= "network-table-grid";
 
-	var headers = [
-	{
-	"column-id":'name',
-	'display-name':'Name',
-	"type": 'string',
-	"identifier":true
-	},
-	{
-	"column-id": 'chpid',
-	'display-name':'CHPID',
-	"type": 'string',
+ 	var headers = [
+ 	{
+ 	"column-id":'name',
+ 	'display-name':'Name',
+ 	"type": 'string',
+ 	"identifier":true
+ 	},
+ 	{
+ 	"column-id": 'chpid',
+ 	'display-name':'CHPID',
+ 	"type": 'string',
 
-	},
-	{
-	"column-id": 'card_type',
-	'display-name':'Card Type',
-	"type": 'string'
-	},
-	{
-	"column-id": 'device_ids',
-	'display-name':'Device IDs',
-	"type": 'string'
-	}
-	];
+ 	},
+ 	{
+ 	"column-id": 'card_type',
+ 	'display-name':'Card Type',
+ 	"type": 'string'
+ 	},
+ 	{
+ 	"column-id": 'device_ids',
+ 	'display-name':'Device IDs',
+ 	"type": 'string'
+ 	}
+ 	];
 
-	opts['headers']=JSON.stringify(headers);
+ 	opts['headers']=JSON.stringify(headers);
 
-	gingers390x.initHeader(opts);
-	gingers390x.initBootgrid(opts);
+ 	gingers390x.initHeader(opts);
+ 	gingers390x.initBootgrid(opts);
 
-	var actionButtonHtml = '<div class="col-sm-1 grid-control">'+
-	'<button class="row btn btn-primary" type="submit" id="network-enable-btn" aria-expanded="false" disabled="true">'+actionButtonText+'</button>'+
-	'</div>';
-	// var selectedRowIds = [];
-	gingers390x.addBootgridActionButton(opts, actionButtonHtml);
-	 $('#network-enable-btn').on('click', function(event){
-     gingers390x.disableActionButton();
-   	 gingers390x.enableNetworks(opts);
-     event.preventDefault();
-   });
+ 	var actionButtonHtml = '<div class="col-sm-1 grid-control">'+
+ 	'<button class="row btn btn-primary" type="submit" id="network-enable-btn" aria-expanded="false" disabled="true">'+actionButtonText+'</button>'+
+ 	'</div>';
+ 	// var selectedRowIds = [];
+ 	gingers390x.addBootgridActionButton(opts, actionButtonHtml);
+ 	 $('#network-enable-btn').on('click', function(event){
+      gingers390x.disableActionButton();
+    	 gingers390x.enableNetworks(opts);
+      event.preventDefault();
+    });
 
-	 gingers390x.initNetworkBootGridData(opts);
+ 	 gingers390x.initNetworkBootGridData(opts);
 
-};
+ };
 
-gingers390x.initNetworkBootGridData = function(opts){
+ gingers390x.initNetworkBootGridData = function(opts){
 
-		var result=[];
-		gingers390x.disableActionButton();
-		gingers390x.clearBootgridData(opts);
-		// $('.loading').show();
+ 		var result=[];
+ 		gingers390x.disableActionButton();
+ 		gingers390x.clearBootgridData(opts);
+ 		// $('.loading').show();
 
-		gingers390x.listNetworks(function(result){
+ 		gingers390x.listNetworks(function(result){
 
-		result1=[
-	  	 {
-	  	    "name":"0.0.1888",
-	  	    "driver":"qeth",
-	  	    "card_type":"OSA (QDIO)",
-	  	    "chpid":"e7",
-	  	    "state":"Unconfigured",
-	  	    "device_ids":[
-	  	      "0.0.1886",
-	  	      "0.0.1887",
-	  	      "0.0.1888"
-	  	    ],
-	  	    "type":"1731/01"
-	  	  }]
+ 		result1=[
+ 	  	 {
+ 	  	    "name":"0.0.1888",
+ 	  	    "driver":"qeth",
+ 	  	    "card_type":"OSA (QDIO)",
+ 	  	    "chpid":"e7",
+ 	  	    "state":"Unconfigured",
+ 	  	    "device_ids":[
+ 	  	      "0.0.1886",
+ 	  	      "0.0.1887",
+ 	  	      "0.0.1888"
+ 	  	    ],
+ 	  	    "type":"1731/01"
+ 	  	  }]
 
-		function stringifyNestedObject(key, value) {
-			if (key === "device_ids" && typeof value === "object") {
-				value = value.join(',');
-			}
-		return value;
-	  }
+ 		function stringifyNestedObject(key, value) {
+ 			if (key === "device_ids" && typeof value === "object") {
+ 				value = value.join(',');
+ 			}
+ 		return value;
+ 	  }
 
-		stringify_result=JSON.stringify(result, stringifyNestedObject);
-		stringify_result=JSON.parse(stringify_result);
+ 		stringify_result=JSON.stringify(result, stringifyNestedObject);
+ 		stringify_result=JSON.parse(stringify_result);
 
-    gingers390x.initBootgridData(opts, stringify_result);
+     gingers390x.initBootgridData(opts, stringify_result);
 
-		if(stringify_result && stringify_result.length > 0){
-	  	gingers390x.enableActionButton();
-		}else{
-			$('.no-data-found').show();
-		}
+ 		if(stringify_result && stringify_result.length > 0){
+ 	  	gingers390x.enableActionButton();
+ 		}else{
+ 			$('.no-data-found').show();
+ 		}
 
-		});
+ 		});
 
-	};
+ 	};
 
-gingers390x.enableNetworks = function(opts){
-	var selectedRowIds = gingers390x.getSelectedRows(opts);
-		wok.message.warn("Enabling "+selectedRowIds+"..On Completion success/failure message will be shown.",'#alert-modal-nw-container');
+ gingers390x.enableNetworks = function(opts){
+ 	var selectedRowIds = gingers390x.getSelectedRows(opts);
+ 		wok.message.warn("Enabling "+selectedRowIds+"..On Completion success/failure message will be shown.",'#alert-modal-nw-container');
 
-		var taskAccepted = false;
-			var onTaskAccepted = function() {
-					if(taskAccepted) {
-							return;
-					}
-					taskAccepted = true;
-					wok.topic('gingers390x/enableNetworks').publish();
-		 };
+ 		var taskAccepted = false;
+ 			var onTaskAccepted = function() {
+ 					if(taskAccepted) {
+ 							return;
+ 					}
+ 					taskAccepted = true;
+ 					wok.topic('gingers390x/enableNetworks').publish();
+ 		 };
 
-		 for(var i=0;i<selectedRowIds.length;i++){
-			 gingers390x.configureNetwork(selectedRowIds[i], true, function(result) {
-						onTaskAccepted();
-						gingers390x.initNetworkBootGridData(opts);  //Reload The list
-						var successText = result['message'];
-						gingers390x.messagecloseable.success(successText,'#alert-modal-nw-container');
-						wok.topic('gingers390x/enableNetworks').publish();
-				 }, function(result) {
-					 gingers390x.initNetworkBootGridData(opts);  //Reload the list
-						if (result['message']) { // Error message from Async Task status TODO
-								var errText = result['message'];
-						}
-						else { // Error message from standard gingers390x exception TODO
-								var errText = result['responseJSON']['reason'];
-						}
-						result && gingers390x.messagecloseable.error(errText,'#alert-modal-nw-container');
-						taskAccepted;
-				}, onTaskAccepted);
-		 }
+ 		 for(var i=0;i<selectedRowIds.length;i++){
+ 			 gingers390x.configureNetwork(selectedRowIds[i], true, function(result) {
+ 						onTaskAccepted();
+ 						gingers390x.initNetworkBootGridData(opts);  //Reload The list
+ 						var successText = result['message'];
+ 						gingers390x.messagecloseable.success(successText,'#alert-modal-nw-container');
+ 						wok.topic('gingers390x/enableNetworks').publish();
+ 				 }, function(result) {
+ 					 gingers390x.initNetworkBootGridData(opts);  //Reload the list
+ 						if (result['message']) { // Error message from Async Task status TODO
+ 								var errText = result['message'];
+ 						}
+ 						else { // Error message from standard gingers390x exception TODO
+ 								var errText = result['responseJSON']['reason'];
+ 						}
+ 						result && gingers390x.messagecloseable.error(errText,'#alert-modal-nw-container');
+ 						taskAccepted;
+ 				}, onTaskAccepted);
+ 		 }
 
 
-	};
+ 	};
 
-	gingers390x.enableActionButton = function(){
-		$('#network-enable-btn').prop("disabled", false);
-	};
+ 	gingers390x.enableActionButton = function(){
+ 		$('#network-enable-btn').prop("disabled", false);
+ 	};
 
-	gingers390x.disableActionButton = function(){
-		$('#network-enable-btn').prop("disabled", true);
-	};
+ 	gingers390x.disableActionButton = function(){
+ 		$('#network-enable-btn').prop("disabled", true);
+ 	};

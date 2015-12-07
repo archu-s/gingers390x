@@ -23,48 +23,60 @@
 #silent _ = t.gettext
 #silent _t = t.gettext
 <!DOCTYPE html>
-#TODO: enabling messge hint taskid, blacklisting btn action, grid col sorting image and table css, after sucess remove col or disable butn and referesh refersh?. loop enabling
 
 <html>
 <head>
-
-<link rel="stylesheet" href="plugins/gingers390x/css/theme-default.min.css">
-<script src="plugins/gingers390x/js/gingers390x.min.js"></script>
+  <link rel="stylesheet" href="plugins/gingers390x/css/theme-default.min.css">
+  <script src="plugins/gingers390x/js/gingers390x.min.js"></script>
 <link rel="stylesheet" href="$href('libs/bootstrap-select/dist/css/jquery.bootgrid.min.css')">
-<script src="$href('libs/bootstrap-select/dist/js/jquery.bootgrid.min.js')"></script>
-
+  <script src="$href('libs/bootstrap-select/dist/js/jquery.bootgrid.min.js')"></script>
 </head>
 <body>
-
-<div class="modal-dialog">
-<div id="network-window" class="modal-content">
-    <div class="modal-header">
+  <div id="s390x-network-container" class="gingers390x">
+    <div class="modal-content">
+      <div class="modal-header">
         <h4 class="modal-title">$_("Add Network Adapter")</h4>
-    </div>
-    <!--start of modal-body-->
-    <div class="modal-body">
-    <div id="network-section">
-        <h3>$_("Offline Network Devices")</h3>
-        <div class="content-area">
-		        <span id='alert-modal-nw-container' style='display: none;'></span>
-            <div id="network-content-container"><!--Filled by JS--></div>
-                <p>
-                $_("Didn't found the device your are looking for? It may be in Blacklist..")</p>
-		    </div>
-    	  <h3>$_("Remove From Blacklist")</h3>
-    	  <div class="content-area" id="blacklist-content-container"><!--Filled by JS--></div>
       </div>
+
+      <div class="modal-body">
+        <div class="panel-group" id="s390x-network-accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <h3>
+              <a role="button" data-toggle="collapse" data-parent="#s390x-network-accordion" href="#s390x-network-content-area" aria-expanded="false" aria-controls="s390x-network-content-area" class="">
+                <span class="accordion-icon"></span><span class="accordion-text">$_("Offline Network Devices")</span>
+              </a>
+            </h3>
+            <div id="s390x-network-content-area" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <span id='alert-modal-nw-container' style='display: none;'></span>
+              <div id="network-content-container"><!--Filled by JS--></div>
+              <p>$_("Didn't found the device your are looking for? It may be in Blacklist..")</p>
+            </div>
+          </div>
+          <hr>
+          <div class="panel panel-default" id="s390x-blacklist-accordion" role="tablist" aria-multiselectable="true">
+            <h3>
+              <a role="button" data-toggle="collapse" data-parent="#s390x-network-accordion" href="#s390x-blacklist-content-area" aria-expanded="false" aria-controls="s390x-network-content-area" class="">
+                <span class="accordion-icon"></span><span class="accordion-text">$_("Remove from blacklist")</span>
+              </a>
+            </h3>
+            <div id="s390x-blacklist-content-area" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <span id='alert-modal-nw-container' style='display: none;'></span>
+              <div id="blacklist-content-container"><!--Filled by JS--></div>
+            </div>
+            <div id="blacklist-content-container"><!--Filled by JS--></div>
+          </div>
+          <hr>
+        </div>
       </div>
-  <!--end of modal-body-->
-  <!--start of modal-footer-->
+
       <div class="modal-footer">
-         <button type="button" id="networkAdpaterFinish" data-dismiss="modal" class="btn btn-default">$_("Finish")</button>
-       </div>
-  <!--end of modal-footer-->
-</div>
-</div>
-<script>
-gingers390x.initNetwork()
-</script>
-</body>
-</html>
+        <button type="button" id="s390x-network-finish" class="btn btn-default" data-dismiss="modal">$_("Finish")</button>
+      </div>
+
+    </div>
+
+  <script type="text/javascript">
+    gingers390x.initNetwork()
+    </script>
+  </body>
+  </html>

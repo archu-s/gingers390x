@@ -1,20 +1,3 @@
-/*
- * Project Ginger S390x
- *
- * Copyright IBM, Corp. 2015
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 gingers390x.initHeader = function(opts){
 
 	var containerId = opts['containerId'];
@@ -59,7 +42,7 @@ gingers390x.initBootgrid= function(opts){
     	columnSelection:false,
     	rowSelect:true,
     	labels: {
-    		search: "Filter"//,
+    		search: "Filter",
     		 noResults:""
     	},
     	css: {   // TODO css
@@ -71,14 +54,14 @@ gingers390x.initBootgrid= function(opts){
 					$( ".no-results" ).remove();
 					if($('#'+gridId).bootgrid('getTotalRowCount') > 0){
 						$( ".loading" ).hide();
+						$( ".loading" ).text("Loading....."); //TODO i18n
 					}else{
 						$( ".loading" ).show();
-						$( ".loading" ).text("Loading....."); //TODO i18n
 					}
   }).on("appended.rs.jquery.bootgrid", function (e, appendedRows) {
 		if($('#'+gridId).bootgrid('getTotalRowCount') === 0){
 			$( ".loading" ).text("No Result Found"); //TODO i18n
-			gingers390x.deselectAll();
+			gingers390x.deselectAll(opts);
 		}else{
 			$( ".loading" ).text("Loading....."); //TODO i18n
 		}
@@ -88,9 +71,9 @@ gingers390x.initBootgrid= function(opts){
 
 gingers390x.initBootgridData = function(opts, data){
 	gingers390x.clearBootgridData(opts);
-	$('.loading').show();
-  gingers390x.appendBootgridData(opts,data));
-  $('.loading').hide();
+//	$('.loading').show();
+  gingers390x.appendBootgridData(opts,data);
+//  $('.loading').hide();
 };
 
 gingers390x.clearBootgridData = function(opts){
