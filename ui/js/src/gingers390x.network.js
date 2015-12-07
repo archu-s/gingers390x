@@ -20,15 +20,8 @@
  gingers390x.initNetwork = function(){
 
  	$(".modal-dialog").addClass("modal-lg");
-// 	$(".content-area", "#network-section").css("height", "50%"); // TODO scroll, heading css
-// 	$("#network-section").accordion({
-// 	event:"click",
-// 	collapsible:true,
-// 	active:0,
-// 	heightStyle: "content",
-// 	});
-
- 	gingers390x.initBlacklist();
+ 	
+        gingers390x.initBlacklist();
  	gingers390x.initNetworkBootgrid('Enable'); // TODO i18n
  };
 
@@ -145,14 +138,13 @@
  		 for(var i=0;i<selectedRowIds.length;i++){
  			 gingers390x.configureNetwork(selectedRowIds[i], true, function(result) {
  						onTaskAccepted();
-var loadingHtml = ['<tbody><tr><td></td></tr></tbody><tbody><tr><td class="loading" colspan="5">Loading.....</td></tr></tbody>'].join('');  //TODO i18n
+                        var loadingHtml = ['<tbody><tr><td></td></tr></tbody><tbody><tr><td class="loading" colspan="5">Loading.....</td></tr></tbody>'].join('');  //TODO i18n
                         $(loadingHtml).appendTo($('#'+opts["gridId"])); 	
 					gingers390x.initNetworkBootGridData(opts);  //Reload The list
  						var successText = result['message'];
  						gingers390x.messagecloseable.success(successText,'#alert-modal-nw-container');
  						wok.topic('gingers390x/enableNetworks').publish();
  				 }, function(result) {
-alert(JSON.stringify(result));
  					 gingers390x.initNetworkBootGridData(opts);  //Reload the list
  						if (result['message']) { // Error message from Async Task status TODO
  								var errText = result['message'];

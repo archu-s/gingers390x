@@ -72,9 +72,9 @@ gingers390x.initBootgrid= function(opts){
                                         if($('#'+gridId).bootgrid('getTotalRowCount') > 0){
                                                 $( ".loading" ).hide();
                                                 $( ".loading" ).text("Loading....."); //TODO i18n
-$('#'+gridId).find('td:empty').remove();
-$('#'+gridId).find('tr:empty').remove();
-$('#'+gridId).find('tbody:empty').remove();
+                                                $('#'+gridId).find('td:empty').remove();
+						$('#'+gridId).find('tr:empty').remove();
+						$('#'+gridId).find('tbody:empty').remove();
                                         }else{
                                                 $( ".loading" ).show();
   }
@@ -82,16 +82,8 @@ $('#'+gridId).find('tbody:empty').remove();
                 if($('#'+gridId).bootgrid('getTotalRowCount') === 0   && appendedRows==0){
                         $( ".loading" ).text("No Result Found"); //TODO i18n
                         gingers390x.deselectAll(opts);
-//              }else if(appendedRows.length>0) {
-//$( ".loading" ).closest("tbody").remove();
-}else{
-//alert("hi")
-//$('#'+gridId).find('td:empty').remove();
-//$('#'+gridId).find('tr:empty').remove();
-//alert("hi")
-//$('#'+gridId).find('tbody:empty').remove();
-$( ".loading" ).closest("tbody").remove();
-
+                }else{
+                      $( ".loading" ).closest("tbody").remove();
                 }
   });
 
@@ -100,9 +92,7 @@ $( ".loading" ).closest("tbody").remove();
 
 gingers390x.initBootgridData = function(opts, data){
 	gingers390x.clearBootgridData(opts);
-//	$('.loading').show();
   gingers390x.appendBootgridData(opts,data);
-//  $('.loading').hide();
 };
 
 gingers390x.clearBootgridData = function(opts){
