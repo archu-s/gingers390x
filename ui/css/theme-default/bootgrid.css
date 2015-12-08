@@ -29,30 +29,33 @@
  * A partial implementation of the Ruby display functions from Compass:
  * https://github.com/Compass/compass/blob/stable/core/lib/compass/core/sass_extensions/functions/display.rb
  */
-.gridHeader{
+.gingers390x .gridHeader{
    text-align:left;
  }
 
-.bootgrid-table {
+.gingers390x .bootgrid-table {
   height:300px;
   width:100%;
 }
 
-.bootgrid-table th > .column-header-anchor > .icon {
+.gingers390x .bootgrid-table th > .column-header-anchor > .icon {
     right:40%
   }
-  .bootgrid-table thead{
+
+.gingers390x .bootgrid-table thead{
     display:block;
     width:100%;
     padding:0 1.7% 0 0;
   }
-  .bootgrid-table tbody {
+
+.gingers390x .bootgrid-table tbody {
     height:250px;
     overflow-y:scroll;
     position:absolute;
     width:100%;
   }
-  .bootgrid-table tr {
+
+.gingers390x .bootgrid-table tr {
     width:100% ;
     display:inline-table;
   }
