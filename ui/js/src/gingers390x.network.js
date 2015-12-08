@@ -36,23 +36,26 @@
  	"column-id":'name',
  	'display-name':'Name',
  	"type": 'string',
- 	"identifier":true
+ 	"identifier":true,
+	"width":"25%"
  	},
  	{
  	"column-id": 'chpid',
  	'display-name':'CHPID',
  	"type": 'string',
-
+	"width":"25%"
  	},
  	{
  	"column-id": 'card_type',
  	'display-name':'Card Type',
- 	"type": 'string'
+ 	"type": 'string',
+	"width":"25%"
  	},
  	{
  	"column-id": 'device_ids',
  	'display-name':'Device IDs',
- 	"type": 'string'
+ 	"type": 'string',
+	"width":"25%"
  	}
  	];
 

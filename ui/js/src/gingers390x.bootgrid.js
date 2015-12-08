@@ -16,9 +16,11 @@ gingers390x.initHeader = function(opts){
 	for(var i=0;i<fields.length;i++){
 	var columnHtml = [
 	'<th data-type="',fields[i]["type"],'" data-column-id="',fields[i]["column-id"],'"',
-	(fields[i].identifier)?'data-identifier="true"':'','>',
+	(fields[i].identifier)?'data-identifier="true"':'',' data-align="left" headerAlign="center"',
+	(fields[i]["width"])?(' data-width="'+fields[i]["width"]+'"'):'',
+	'data-header-css-class="gridHeader">',
 	fields[i]["display-name"],
-	'</th>'
+	'</th>'	
 	].join('');
 
 	$(columnHtml).appendTo($('tr','#'+gridId));
