@@ -1,3 +1,26 @@
+gingers390x.initFCPLunsDetails = function(){
+  gingers390x.loadFCPLunsList();
+
+    $('#discoverLuns').on("click",function(){
+    gingers390x.lunsDiscovery(function(result){
+      alert("Luns discovery completed"+JSON.stringify(result));
+    });
+  });
+
+  $("#enableLunsScan").on("click",function(){
+      gingers390x.getLunsScanStatus(function(result){
+       alert("Luns status"+JSON.stringify(result));
+       /*if(){
+             gingers390x.lunsScanStatusChange(status,function(result){
+             alert("successfully completed");
+           })
+       }*/
+    });
+  });
+  gingers390x.getLunsScanStatus(function(result){
+    /*show buton status here */
+  });
+}
 gingers390x.loadFCPLunsList = function(){
 
 gingers390x.listFCPluns(function(result){
@@ -6,36 +29,23 @@ gingers390x.listFCPluns(function(result){
 	opts['gridId']= "fcp-luns-table-grid";
   var formattedResult = [];
 	var headers = [
-  /*  {
-  	"column-id":'status',
-  	'display-name':'Status',
-  	"type": 'string',
-    "width":"5%"
-   },
-    {
-  	"column-id":'product',
-  	'display-name':'Product',
-  	"type": 'string',
-  	"width":"10%"
-  },*/
 	{
-	"column-id":'hbaId',
-	'display-name':'Host Adapter',
-	"type": 'string',
-  "width":"15%"
-  //"formatter":"uniqueId"
+  	"column-id":'hbaId',
+  	'display-name':'Host Adapter',
+  	"type": 'string',
+    "width":"15%"
 	},
   {
-  "column-id":'remoteWwpn',
-  'display-name':'Remote Wwpn',
-  "type": 'string',
-  "width":"30%"
+    "column-id":'remoteWwpn',
+    'display-name':'Remote Wwpn',
+    "type": 'string',
+    "width":"30%"
  },
 	{
-	"column-id": 'controllerSN',
-	'display-name':'SAN Controller Id/Serial No',
-	"type": 'string',
-   "width":'30%'
+  	"column-id": 'controllerSN',
+  	'display-name':'SAN Controller Id/Serial No',
+  	"type": 'string',
+     "width":'30%'
 	},
   	{
   	"column-id": 'lunId',
@@ -43,18 +53,12 @@ gingers390x.listFCPluns(function(result){
   	"type": 'string',
     "width":"20%"
   },
-  /*{
-  "column-id": 'type',
-  'display-name':'Type',
-  "type": 'string',
-  "width":"10%"
-},*/
   {
-  "column-id":'Srno',
-  'display-name':'id',
-  "type": 'numeric',
-  "identifier":true,
-  "invisible":true
+    "column-id":'Srno',
+    'display-name':'id',
+    "type": 'numeric',
+    "identifier":true,
+    "invisible":true
   }
 	];
   for(var i=0;i<result.length;i++){
@@ -69,7 +73,7 @@ gingers390x.listFCPluns(function(result){
 	gingers390x.initBootgrid(opts);
   gingers390x.initBootgridData(opts,result);
 
-  var fcpLunsGrid = $('#fcp-luns-table-grid').bootgrid().on("loaded.rs.jquery.bootgrid", function (e) {
+  /*var fcpLunsGrid = $('#fcp-luns-table-grid').bootgrid().on("loaded.rs.jquery.bootgrid", function (e) {
         fcpLunsGrid.find(".expand").on("click", function(e)
           {
             $('div',$(this).closest('tbody')).closest('tr').remove();
@@ -84,47 +88,10 @@ gingers390x.listFCPluns(function(result){
             $(this).addClass("hidden");
             $('.expand',$(this).parent()).removeClass("hidden");
           });
-  });
+  });*/
   gingers390x.addFCPActions();
 });
 };
-/*gingers390x.parseLunsResponse = function(data){
-var hbaSanMap = {};
-var hbaLunsMap = {};
-var sanList = [];
-var lunsList = [];
-var fcpResponse = [];
- $.each(data,function(i, row){
-   var hbaId =  row.hbaId;
-   var sanSrNo  = row.controllerSN;
-   var lunsNo = row.lunId;
-   if(Object.keys(hbaSanMap).indexOf(hbaId)!=-1){
-    sanList = hbaSanMap[hbaId];
-    lunsList = hbaLunsMap[hbaId];
-     sanList.push.apply(sanList,sanSrNo);
-     lunsList.push.apply(lunsList,sanSrNo);
-     hbaSanMap[hbaId] = sanList;
-     hbaLunsMap[hbaId] = lunsList;
-   }else {
-     sanList.push.apply(sanList,sanSrNo);
-     lunsList.push.apply(lunsList,sanSrNo);
-     hbaSanMap[hbaId] = sanList;
-     hbaLunsMap[hbaId] = lunsList;
-   }
- });
- Object.keys(hbaSanMap).forEach(function(key){
-
-               var sandetails = hbaSanMap(key).join(" \n ");
-               var lunsDetails = hbaLunsMap(key).join(" \n ");
-                var details = {
-                  "hba" : key,
-                  "controllerSN":sandetails,
-                  "lunId":lunsDetails,
-                };
-               fcpResponse.push(details);
-            });
-   return fcpResponse;
-};*/
 gingers390x.addFCPActions=function(){
   var opts={};
   opts['gridId'] = 'fcp-luns-table-grid';
@@ -142,8 +109,8 @@ gingers390x.addFCPActions=function(){
              $.each(selectedRowDetails,function(i,row){
               var lunAddDetails = {
                 'hbaId':row['hbaId'],
-                'remoteWwpn'=row['remoteWwpn'];
-                'lunId'=row['lunId'];
+                'remoteWwpn':row['remoteWwpn'],
+                'lunId':row['lunId']
               }
               gingers390x.addLuns(lunAddDetails);
            });
@@ -156,12 +123,12 @@ gingers390x.addFCPActions=function(){
           label: 'Add All',
           onClick: function(event) {
             var selectedRowDetails = gingers390x.getCurrentRows(opts);
-            
+
             $.each(selectedRowDetails,function(i,row){
              var lunAddDetails = {
                'hbaId':row['hbaId'],
-               'remoteWwpn'=row['remoteWwpn'];
-               'lunId'=row['lunId'];
+               'remoteWwpn':row['remoteWwpn'],
+               'lunId':row['lunId']
              }
              gingers390x.addLuns(lunAddDetails);
           });
@@ -175,4 +142,8 @@ gingers390x.addFCPActions=function(){
       };
 
       ginger.createActionList(actionListSettings);
+};
+
+gingers390x.enableDisableLuns =  function(){
+
 }

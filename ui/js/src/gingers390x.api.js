@@ -156,8 +156,8 @@ var gingers390x = {
     },
     listFCPluns : function(suc, err){
       wok.requestJSON({
-	    url : 'plugins/gingers390x/lunsList.json',
-      //url:'plugins/gingers390x/fcluns',
+	    //url : 'plugins/gingers390x/lunsList.json',
+      url:'plugins/gingers390x/fcluns',
     	type : 'GET',
     	contentType : 'application/json',
     	dataType : 'json',
@@ -173,6 +173,39 @@ var gingers390x = {
           type : "POST",
           contentType : "application/json",
           data : JSON.stringify(settings),
+          dataType : "json",
+          success : suc,
+          error : err
+      });
+    },
+    getLunsScanStatus : function(suc,err){
+      wok.requestJSON({
+	    url : 'plugins/gingers390x/lunscan',
+      type : 'GET',
+    	contentType : 'application/json',
+    	dataType : 'json',
+    	success : suc,
+    	error : function(data) {
+    	  gingers390x.messagecloseable.error(data.responseJSON.reason);
+    	 }
+    	});
+    },
+    lunsScanStatusChange :function(enable,suc,err){
+      wok.requestJSON({
+        url : "plugins/gingers390x/lunscan/" +
+              (enabled === true ? 'disable' : 'enable'),
+          type : "POST",
+          contentType : "application/json",
+          dataType : "json",
+          success : suc,
+          error : err
+      });
+    },
+    lunsDiscovery :function(suc,err){
+      wok.requestJSON({
+        url : "plugins/gingers390x/lunscan/trigger",
+          type : "POST",
+          contentType : "application/json",
           dataType : "json",
           success : suc,
           error : err
