@@ -2,55 +2,81 @@ gingers390x.initFCPLunsDetails = function(){
   gingers390x.loadFCPLunsList();
 
     $('#discoverLuns').on("click",function(){
-    gingers390x.lunsDiscovery(function(result){
-      alert("Luns discovery completed"+JSON.stringify(result));
-    });
+      wok.message.warn("Searching Luns ",'#alert-modal-storage-container');
+
+   		var taskAccepted = false;
+   			var onTaskAccepted = function() {
+   					if(taskAccepted) {
+   							return;
+   					}
+   					taskAccepted = true;
+   					//wok.topic('gingers390x/enableNetworks').publish();
+   		 };
+      gingers390x.lunsDiscovery(function(result){
+          onTaskAccepted();
+          gingers390x.retrieveLunsList();  //Reload The list
+          var successText = result['message'];
+          gingers390x.messagecloseable.success(successText,'#alert-modal-storage-container');
+        //  wok.topic('gingers390x/enableNetworks').publish();
+      },function(result){
+          gingers390x.retrieveLunsList();;  //Reload the list
+          if (result['message']) { // Error message from Async Task status TODO
+              var errText = result['message'];
+          }
+          else { // Error message from standard gingers390x exception TODO
+              var errText = result['responseJSON']['reason'];
+          }
+          result && gingers390x.messagecloseable.error(errText,'#alert-modal-storage-container');
+          taskAccepted;
+       },onTaskAccepted);
   });
 
   $("#enableLunsScan").on("click",function(){
       gingers390x.getLunsScanStatus(function(result){
-       alert("Luns status"+JSON.stringify(result));
-       /*if(){
-             gingers390x.lunsScanStatusChange(status,function(result){
-             alert("successfully completed");
-           })
-       }*/
+        alert(result.current);
+         gingers390x.lunsScanStatusChange(result.current,function(response){
+           alert(JSON.stringify(response));
+           var lunsStatusButtonText = (response.current)?'Disable LUN Scan':'Enable LUN Scan';
+             $('#enableLunsScan').text(lunsStatusButtonText);
+         });
     });
   });
+
   gingers390x.getLunsScanStatus(function(result){
-    /*show buton status here */
+    var lunsStatusButtonText = (result.current)?'Disable LUN Scan':'Enable LUN Scan';
+      $('#enableLunsScan').text(lunsStatusButtonText);
+    
   });
 }
 gingers390x.loadFCPLunsList = function(){
-
-gingers390x.listFCPluns(function(result){
+  gingers390x.addFCPActions();
   var opts =[];
-	opts['containerId']='fcp-luns-list-container';
-	opts['gridId']= "fcp-luns-table-grid";
+  opts['containerId']='fcp-luns-list-container';
+  opts['gridId']= "fcp-luns-table-grid";
   var formattedResult = [];
-	var headers = [
-	{
-  	"column-id":'hbaId',
-  	'display-name':'Host Adapter',
-  	"type": 'string',
+  var headers = [
+  {
+    "column-id":'hbaId',
+    'display-name':'Host Adapter',
+    "type": 'string',
     "width":"15%"
-	},
+  },
   {
     "column-id":'remoteWwpn',
     'display-name':'Remote Wwpn',
     "type": 'string',
     "width":"30%"
- },
-	{
-  	"column-id": 'controllerSN',
-  	'display-name':'SAN Controller Id/Serial No',
-  	"type": 'string',
+  },
+  {
+    "column-id": 'controllerSN',
+    'display-name':'SAN Controller Id/Serial No',
+    "type": 'string',
      "width":'30%'
-	},
-  	{
-  	"column-id": 'lunId',
-  	'display-name':'Lun Id',
-  	"type": 'string',
+  },
+    {
+    "column-id": 'lunId',
+    'display-name':'Lun Id',
+    "type": 'string',
     "width":"20%"
   },
   {
@@ -60,37 +86,15 @@ gingers390x.listFCPluns(function(result){
     "identifier":true,
     "invisible":true
   }
-	];
-  for(var i=0;i<result.length;i++){
-    var lunsDetails = result[i];
-    lunsDetails["Srno"]=i;
-    formattedResult.push(lunsDetails);
-  }
+  ];
 
   opts['headers']=JSON.stringify(headers);
 
-	gingers390x.initHeader(opts);
-	gingers390x.initBootgrid(opts);
-  gingers390x.initBootgridData(opts,result);
+  gingers390x.initHeader(opts);
+  gingers390x.initBootgrid(opts);
 
-  /*var fcpLunsGrid = $('#fcp-luns-table-grid').bootgrid().on("loaded.rs.jquery.bootgrid", function (e) {
-        fcpLunsGrid.find(".expand").on("click", function(e)
-          {
-            $('div',$(this).closest('tbody')).closest('tr').remove();
-            $('.expanded',$(this).closest('tbody')).addClass("hidden");
-            $('.expand',$(this).closest('tbody')).removeClass("hidden");
-            $(this).closest('tr').after('<tr class="row"><td colspan="4"><div class="pull-right">'+$(this).data("row-id")+'</div></td></tr>');
-            $(this).addClass("hidden");
-            $('.expanded',$(this).parent()).removeClass("hidden");
-          }).end().find(".expanded").on("click", function(e)
-          {
-            $('div',$(this).closest('tbody')).closest('tr').remove();
-            $(this).addClass("hidden");
-            $('.expand',$(this).parent()).removeClass("hidden");
-          });
-  });*/
-  gingers390x.addFCPActions();
-});
+  gingers390x.retrieveLunsList();
+
 };
 gingers390x.addFCPActions=function(){
   var opts={};
@@ -146,4 +150,19 @@ gingers390x.addFCPActions=function(){
 
 gingers390x.enableDisableLuns =  function(){
 
-}
+};
+gingers390x.retrieveLunsList = function(){
+    gingers390x.listFCPluns(function(result){
+      var opts =[];
+      opts['containerId']='fcp-luns-list-container';
+      opts['gridId']= "fcp-luns-table-grid";
+      var formattedResult = [];
+
+      for(var i=0;i<result.length;i++){
+        var lunsDetails = result[i];
+        lunsDetails["Srno"]=i;
+        formattedResult.push(lunsDetails);
+      }
+      gingers390x.initBootgridData(opts,formattedResult);
+  });
+};

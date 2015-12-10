@@ -190,7 +190,7 @@ var gingers390x = {
     	 }
     	});
     },
-    lunsScanStatusChange :function(enable,suc,err){
+    lunsScanStatusChange :function(enable,suc){
       wok.requestJSON({
         url : "plugins/gingers390x/lunscan/" +
               (enabled === true ? 'disable' : 'enable'),
@@ -198,16 +198,23 @@ var gingers390x = {
           contentType : "application/json",
           dataType : "json",
           success : suc,
-          error : err
+          error : function(data){
+            gingers390x.messagecloseable.error(data.responseJSON.reason);
+          }
       });
     },
-    lunsDiscovery :function(suc,err){
+    lunsDiscovery :function(suc,err,progress){
+      var onResponse = function(data) {
+          taskID = data['id'];
+          gingers390x.trackTask(taskID, suc, err, progress);
+      };
+
       wok.requestJSON({
         url : "plugins/gingers390x/lunscan/trigger",
           type : "POST",
           contentType : "application/json",
           dataType : "json",
-          success : suc,
+          success : onResponse,
           error : err
       });
     }
