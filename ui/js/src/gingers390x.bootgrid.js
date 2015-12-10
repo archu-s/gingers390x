@@ -18,9 +18,11 @@ gingers390x.initHeader = function(opts){
 	'<th data-type="',fields[i]["type"],'" data-column-id="',fields[i]["column-id"],'"',
 	(fields[i].identifier)?'data-identifier="true"':'',' data-align="left" headerAlign="center"',
 	(fields[i]["width"])?(' data-width="'+fields[i]["width"]+'"'):'',
+	(fields[i].formatter)?('data-formatter="'+fields[i].formatter+'"'):'',
+	(fields[i].invisible)?'data-visible="false"':'',
 	'data-header-css-class="gridHeader">',
 	fields[i]["display-name"],
-	'</th>'	
+	'</th>'
 	].join('');
 
 	$(columnHtml).appendTo($('tr','#'+gridId));
@@ -50,7 +52,18 @@ gingers390x.initBootgrid= function(opts){
     	css: {   // TODO css
 						iconDown : "fa fa-sort-desc",
 						iconUp: "fa fa-sort-asc"
-      }
+      },
+			formatters: {
+					 "expand": function(column, row)
+					 {
+					 return "<button type=\"button\" class=\"btn btn-xs btn-default expand\" data-row-id=\"" + row.lunId + "\"><span class=\"fa fa-sort-desc\"></i></button> " +
+					 "<button type=\"button\" class=\"btn btn-xs btn-default expanded hidden \" data-row-id=\"" + row.lunId + "\"><span class=\"fa fa-sort-asc\"></i></button>";
+				 },
+				 "uniqueId":function(column, row){
+					 var uniqueId = row.hbaId+""+row.remoteWwpn+""+row.controllerSN;
+					 return uniqueId;
+				 }
+	    }
 //	}).on("loaded.rs.jquery.bootgrid", function (e) {
  //       	$('.input-group .glyphicon-search').removeClass('.glyphicon-search').addClass('fa fa-search');
 //					$( ".no-results" ).remove();
@@ -127,3 +140,16 @@ gingers390x.addBootgridActionButton = function(opts, actionButtonHtml){
 
    $(actionButtonHtml).appendTo('#'+opts['gridId']+'-header .row .actionBar');
 };
+gingers390x.getSelectedRowsData = function(currentRows,selectedRowIds,identifier){
+ var selectedRowDetails = [];
+ $.each(currentRows,function(i,row){
+	 var rowDetails = row;
+ 	if(selectedRowIds.indexOf(rowDetails[identifier])!=-1){
+ 		selectedRowDetails.push(rowDetails);
+ 	}
+ });
+ return selectedRowDetails;
+};
+gingers390x.getCurrentRows =  function(opts){
+	return $('#'+opts['gridId']).bootgrid("getCurrentRows");
+}

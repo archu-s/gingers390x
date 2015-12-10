@@ -1,0 +1,129 @@
+#*
+ * Project Kimchi
+ *
+ * Copyright IBM, Corp. 2013-2015
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+
+#unicode UTF-8
+#import gettext
+#from wok.cachebust import href
+#silent t = gettext.translation($lang.domain, $lang.localedir, languages=$lang.lang, fallback=True)
+#silent _ = t.gettext
+#silent _t = t.gettext
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="plugins/gingers390x/css/theme-default.min.css">
+<script src="plugins/gingers390x/js/gingers390x.min.js"></script>
+
+</head>
+<body>
+
+<div id="storage-window-modal" class="gingers390x">
+<div id="storage-window" class="window modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">$_("Add FCP Tape devices")</h4>
+    </div>
+    <div class="modal-body">
+    <div class="panel-group" id="storage-accordion">
+    	<div class="panel panel-primary">
+      		<div class="panel-heading">
+
+      		<div class="panel-title">
+                <a data-toggle="collapse" data-parent="#storage-accordion" href="#offlineStorageDevices">
+                <font size=3>Discovered LUNs not yet attached to the system</font></a>
+            </div>
+      		</div>
+      		<div id="offlineStorageDevices" class="panel-collapse collapse in">
+      		<div class="panel-body">
+      		<!--	<div class="row grid-control">
+                	<div class="pull-right">
+                    	<label for="storage-filter" class="sr-only">$_("Filter"):</label>
+                    	<input type="text" class="filter form-control" placeholder="$_("Filter")">
+                	</div>
+                	<button class="row btn btn-primary" type="button" aria-expanded="false">$_("Enable")</button>
+        		</div>
+        		<div id="noOfflineStorageDevice" class="list-no-result" style="display: none;">
+                $_("No offlined storage device found.")
+                </div> -->
+                <div class="col-md-12">
+                  <div class="row">
+                    <span class="pull-left">
+                      <div id="fcp-storage-actions">
+                      </div>
+                    </span>
+                    <span class="pull-right">
+                    <button aria-expanded="false" type="button" class="row btn btn-primary">Enable LUN Scan</button>
+                    <button aria-expanded="false" type="button" class="row btn btn-primary"><i class="fa fa-search"></i> LUN Discovery</button>
+                    <button aria-expanded="false" type="button" class="row btn btn-primary"><i class="fa fa-plus-circle"></i> dd SAN Adapter</button>
+                    </span>
+                  </div>
+                  <div id="fcp-luns-list-container">
+              		</div>
+              </div>
+
+            </div>
+            </div>
+
+
+                	</div>
+    	           </div>
+    	</div>
+
+
+     </div>
+     <div class="modal-footer">
+        <button type="button" id="fcpLunsFinish" data-dismiss="modal" class="btn btn-default">$_("Finish")</button>
+      </div>
+       </div>
+
+</div>
+<div id="modalWindow" class="modal fade storage-modal" tabindex="-1" role="dialog" aria-labelledby="storageModalLabel" aria-hidden="true"> </div>
+<script id="storageItemTable" type="text/html">
+    <tr id='{name}' class='wok-nw-grid-body remove-when-logged-off '>
+        <!--td class='column-state' val="{state}"><td class='storage-state {state}'><i class="fa fa-power-off"></i><td class="wok-nw-loading-icon"></td></td></td--><!--
+                    --><td class="wok-nw-loading-icon"><input type="checkbox" value=""></td><td class='column-name' title="{name}" val="{name}">{name}</td><!--
+                    --><td class='column-type' val="{type}">{type}</td><!--
+                    --><td class='column-interface' val="{interface}">{interface}</td><!--
+                    --><td class='column-space' val="{addrSpace}">{addrSpace}</td><!--
+                    --><!--td class='column-action' style="display:none">
+                                <span class="pull-right">
+                                    <div class="dropdown menu-flat">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"><span class="edit-alt"></span>$_("Actions")<span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li role="presentation" nwAct="start" class='{startClass}'><a><i class="fa fa-undo"></i>$_("Start")</a></li>
+                                            <li role="presentation" nwAct="stop" class='{stopClass}'><a {stopDisabled}><i class="fa fa-ban"></i>$_("Stop")</a></li>
+                                            <li role="presentation" nwAct="delete" class='critical {deleteClass}'><a {deleteDisabled}><i class="fa fa-minus-circle"></i>$_("Delete")</a></li>
+                                        </ul>
+                                    </div>
+                                </span>
+                        </td-->
+            </tr>
+
+
+</script>
+
+
+<script>
+
+    gingers390x.loadFCPLunsList();
+
+
+</script>
+
+</body>
+</html>

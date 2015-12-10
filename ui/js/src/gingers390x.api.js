@@ -153,5 +153,29 @@ var gingers390x = {
           success : onResponse,
           error : err
       });
+    },
+    listFCPluns : function(suc, err){
+      wok.requestJSON({
+	    url : 'plugins/gingers390x/lunsList.json',
+      //url:'plugins/gingers390x/fcluns',
+    	type : 'GET',
+    	contentType : 'application/json',
+    	dataType : 'json',
+    	success : suc,
+    	error : function(data) {
+    	  gingers390x.messagecloseable.error(data.responseJSON.reason);
+    	 }
+    	});
+    },
+    addLuns : function(settings,suc,err){
+      wok.requestJSON({
+        url : "/plugins/gingers390x/fcluns",
+          type : "POST",
+          contentType : "application/json",
+          data : JSON.stringify(settings),
+          dataType : "json",
+          success : suc,
+          error : err
+      });
     }
 };
