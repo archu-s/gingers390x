@@ -157,7 +157,7 @@ var gingers390x = {
     listFCPluns : function(suc, err){
       wok.requestJSON({
 	    //url : 'plugins/gingers390x/lunsList.json',
-      url:'plugins/gingers390x/fcluns',
+      url:'plugins/gingers390x/fcluns?type="disk"',
     	type : 'GET',
     	contentType : 'application/json',
     	dataType : 'json',
@@ -190,7 +190,7 @@ var gingers390x = {
     	 }
     	});
     },
-    lunsScanStatusChange :function(enable,suc){
+    lunsScanStatusChange :function(enabled,suc){
       wok.requestJSON({
         url : "plugins/gingers390x/lunscan/" +
               (enabled === true ? 'disable' : 'enable'),

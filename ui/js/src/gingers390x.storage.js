@@ -45,7 +45,7 @@ gingers390x.initFCPLunsDetails = function(){
   gingers390x.getLunsScanStatus(function(result){
     var lunsStatusButtonText = (result.current)?'Disable LUN Scan':'Enable LUN Scan';
       $('#enableLunsScan').text(lunsStatusButtonText);
-    
+
   });
 }
 gingers390x.loadFCPLunsList = function(){
@@ -110,14 +110,36 @@ gingers390x.addFCPActions=function(){
              var identifier = 'Srno';
 
              var selectedRowDetails = gingers390x.getSelectedRowsData(currentRows,selectedRows,identifier);
+             var rowIndex = 0;
+            var failedlLuns = [];
+            var successLuns = [];
+            var isConfigured = null;
+            var lunsDetails= '';
              $.each(selectedRowDetails,function(i,row){
               var lunAddDetails = {
                 'hbaId':row['hbaId'],
                 'remoteWwpn':row['remoteWwpn'],
                 'lunId':row['lunId']
               }
-              gingers390x.addLuns(lunAddDetails);
-           });
+               gingers390x.addLuns(lunAddDetails,function(result){
+                 isConfigured = result.configured;
+                 lunsDetails = result.hbaId+"|"+result.remoteWwpn;
+                 if(isConfigured){
+                    successLuns.push(lunsDetails);
+                 }else{
+                   failedlLuns.push(lunsDetails);
+                 }
+               },function(result){
+                 isConfigured = false;
+                 failedlLuns.push(result['message']);
+               });
+            });
+            if(selectedRowDetails.length==successLuns.length){
+               gingers390x.messagecloseable.success("Luns sucessfully added",'#alert-modal-storage-container');
+            }else{
+               gingers390x.messagecloseable.error("Error occured while adding Luns",'#alert-modal-storage-container');
+            }
+               gingers390x.retrieveLunsList();
           }
 
       },
@@ -127,6 +149,11 @@ gingers390x.addFCPActions=function(){
           label: 'Add All',
           onClick: function(event) {
             var selectedRowDetails = gingers390x.getCurrentRows(opts);
+            var rowIndex = 0;
+             var failedlLuns = [];
+             var successLuns = [];
+             var isConfigured = null;
+             var lunsDetails= '';
 
             $.each(selectedRowDetails,function(i,row){
              var lunAddDetails = {
@@ -134,8 +161,26 @@ gingers390x.addFCPActions=function(){
                'remoteWwpn':row['remoteWwpn'],
                'lunId':row['lunId']
              }
-             gingers390x.addLuns(lunAddDetails);
+             gingers390x.addLuns(lunAddDetails,function(result){
+               isConfigured = result.configured;
+               lunsDetails = result.hbaId+"|"+result.remoteWwpn;
+               if(isConfigured){
+                  successLuns.push(lunsDetails);
+               }else{
+                 failedlLuns.push(lunsDetails);
+               }
+             },function(result){
+               isConfigured = false;
+               failedlLuns.push(result['message']);
+             });
           });
+
+          if(selectedRowDetails.length==successLuns.length){
+             gingers390x.messagecloseable.success("Luns sucessfully added",'#alert-modal-storage-container');
+          }else{
+             gingers390x.messagecloseable.error("Error occured while adding Luns",'#alert-modal-storage-container');
+          }
+             gingers390x.retrieveLunsList();
           }
       }];
 
