@@ -40,28 +40,18 @@
     <div class="modal-body">
     <div class="panel-group" id="storage-accordion">
     	<div class="panel panel-primary">
-      		<div class="panel-heading">
+      	<!--	<div class="panel-heading">
         		<div class="panel-title">
                 <a data-toggle="collapse" data-parent="#storage-accordion" href="#offlineStorageDevices">
                 <font size=3>Discovered LUNs not yet attached to the system</font></a>
             </div>
-      		</div>
+      		</div>-->
           <div id="s390x-network-content-area" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
             <span id='alert-modal-storage-container' style='display: none;'></span>
           </div>
       		<div id="offlineStorageDevices" class="panel-collapse collapse in">
       		<div class="panel-body">
-      		<!--	<div class="row grid-control">
-                	<div class="pull-right">
-                    	<label for="storage-filter" class="sr-only">$_("Filter"):</label>
-                    	<input type="text" class="filter form-control" placeholder="$_("Filter")">
-                	</div>
-                	<button class="row btn btn-primary" type="button" aria-expanded="false">$_("Enable")</button>
-        		</div>
-        		<div id="noOfflineStorageDevice" class="list-no-result" style="display: none;">
-                $_("No offlined storage device found.")
-                </div> -->
-                <div class="col-md-12">
+      		      <div class="col-md-12">
                   <div class="row">
                     <span class="pull-left">
                       <div id="fcp-storage-actions">
@@ -69,23 +59,21 @@
                     </span>
                     <span class="pull-right">
                     <button id="enableLunsScan" aria-expanded="false" type="button" class="row btn btn-primary">Enable LUN Scan</button>
-                    <button id="discoverLuns" aria-expanded="false" type="button" class="row btn btn-primary"><i class="fa fa-search"></i> LUN Discovery</button>
+                    <button id="refreshLuns" aria-expanded="false" type="button" class="row btn btn-primary"><i class="fa fa-refresh"></i>Refresh</button>
                     <button id="addSANadapter" aria-expanded="false" type="button" class="row btn btn-primary"><i class="fa fa-plus-circle"></i>Add SAN Adapter</button>
                     </span>
                   </div>
                   <div id="fcp-luns-list-container">
               		</div>
+                  <div>
+                    <p class="text-info">$_('Discovered LUNs not yet attached to the system')</p>
+                  </div>
               </div>
-
+             </div>
             </div>
-            </div>
-
-
-                	</div>
-    	           </div>
+          </div>
+    	   </div>
     	</div>
-
-
      </div>
      <div class="modal-footer">
         <button type="button" id="fcpLunsFinish" data-dismiss="modal" class="btn btn-default">$_("Finish")</button>
