@@ -67,7 +67,7 @@ gingers390x.loadFCPLunsList = function(){
   },
   {
     "column-id":'remoteWwpn',
-    'display-name':'Remote Wwpn',
+    'display-name':'Remote WWPN',
     "type": 'string',
     "width":"20%"
   },
